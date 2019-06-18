@@ -3,9 +3,11 @@ package com.thugkd.network;
 import android.app.Application;
 import android.content.IntentFilter;
 
-import com.thugkd.network.listener.NetChangeObserver;
 import com.thugkd.network.utils.Constants;
 
+/**
+ * @author thugkd
+ */
 public class NetworkManager {
     private static volatile NetworkManager instance;
     private Application application;
@@ -27,8 +29,20 @@ public class NetworkManager {
         return instance;
     }
 
-    public void setObserver(NetChangeObserver observer) {
-        receiver.setObserver(observer);
+    /**
+     * 注册
+     * @param register
+     */
+    public void registerObserver(Object register) {
+        receiver.registerObserver(register);
+    }
+
+    /**
+     * 注销
+     * @param register
+     */
+    public void unRegisterObserver(Object register) {
+        receiver.unRegisterObserver(register);
     }
 
     public void init(Application application) {

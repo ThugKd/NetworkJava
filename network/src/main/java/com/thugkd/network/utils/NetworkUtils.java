@@ -8,27 +8,25 @@ import android.net.NetworkInfo;
 import com.thugkd.network.NetworkManager;
 import com.thugkd.network.type.NetType;
 
+/**
+ * @author thugkd
+ */
 public class NetworkUtils {
 
     /**
      * 判断当前网络是否可用
+     *
      * @return
      */
     @SuppressLint("MissingPermission")
     public static boolean isNetworkAvailable() {
         ConnectivityManager manager = (ConnectivityManager) NetworkManager.getInstance().getApplication()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (null == manager) {
-            return false;
-        }
-
-        NetworkInfo[] networkInfos = manager.getAllNetworkInfo();
-        if (null != networkInfos) {
-            for (NetworkInfo info : networkInfos) {
-                if (info.getState() == NetworkInfo.State.CONNECTED) {
-                    return true;
-                }
-            }
+        if (null != manager) {
+            NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+            return null != networkInfo
+                    && networkInfo.isConnected()
+                    && networkInfo.getState() == NetworkInfo.State.CONNECTED;
         }
 
         return false;
@@ -36,6 +34,7 @@ public class NetworkUtils {
 
     /**
      * 获取当前网络类型
+     *
      * @return
      */
     @SuppressLint("MissingPermission")
@@ -59,7 +58,7 @@ public class NetworkUtils {
             } else {
                 return NetType.CMWAP;
             }
-        } else if (type == ConnectivityManager.TYPE_WIFI){
+        } else if (type == ConnectivityManager.TYPE_WIFI) {
             return NetType.WIFI;
         }
 
